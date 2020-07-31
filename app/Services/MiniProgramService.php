@@ -20,7 +20,7 @@ class MiniProgramService
      */
     public function code2Session($code)
     {
-        $app = Factory::miniProgram(config('wechat.mini_program'));
+        $app = Factory::miniProgram(config('wechat.mini_program.default'));
         $res = $app->auth->session($code);
         return $res;
     }
