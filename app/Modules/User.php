@@ -12,6 +12,13 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * 可以被批量赋值的属性。
+     *
+     * @var array
+     */
+    protected $fillable = ['openid', 'session_key', 'name', 'email', 'password', 'avatar_url', 'unionid'];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
