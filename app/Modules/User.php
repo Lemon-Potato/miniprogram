@@ -44,7 +44,7 @@ class User extends Authenticatable
             ]);
             return $res;
         } catch (\Exception $exception) {
-            Log::error('新创建用户失败', $exception->getMessage() . $exception->getTraceAsString());
+            Log::error('新创建用户失败'. $exception->getMessage() . $exception->getTraceAsString());
         }
 
     }
