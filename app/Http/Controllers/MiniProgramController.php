@@ -16,7 +16,7 @@ class MiniProgramController extends Controller
         $mini_program_service = new MiniProgramService();
         $login_info = $mini_program_service->code2Session($code);
         Log::info('微信小程序登录返回参数', $login_info);
-        $res = $user_model->createUser($login_info);
-        return responseSuccess($res->id);
+        $user_id = $user_model->createUser($login_info);
+        return responseSuccess($user_id);
     }
 }
