@@ -61,4 +61,17 @@ class User extends Authenticatable
 
     }
 
+    public function updateUserByOpenId($info)
+    {
+        try {
+            $user = self::query()->where('openid', $info['openId'])->first();
+            $user->name = $info['nickName'];
+            $user->avatar_url = $info['avatarUrl'];
+            $user->save();
+        } catch (\Exception $exception) {
+            Log::error('微信用户更新数据失败'. $exception->getMessage() . $exception->getTraceAsString());
+        }
+
+    }
+
 }
