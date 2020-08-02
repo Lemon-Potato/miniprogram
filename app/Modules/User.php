@@ -49,6 +49,10 @@ class User extends Authenticatable
                 'session_key'=>$info['session_key'],
                 'name'=>'','email'=>'','password'=>'','avatar_url'=>'','unionid'=>''
             ]);
+            if ($res) {
+                $res->session_key = $info['session_key'];
+                $res = $res->save();
+            }
             return $res;
         } catch (\Exception $exception) {
             Log::error('新创建用户失败'. $exception->getMessage() . $exception->getTraceAsString());
