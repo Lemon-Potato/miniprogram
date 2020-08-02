@@ -13,6 +13,13 @@ use EasyWeChat\Factory;
 class MiniProgramService
 {
 
+    protected $app = null;
+
+    public function __construct()
+    {
+        $this->app = Factory::miniProgram(config('wechat.mini_program.default'));
+    }
+
     /**
      * 微信小程序 登录接口
      * @param $code
@@ -20,8 +27,20 @@ class MiniProgramService
      */
     public function code2Session($code)
     {
-        $app = Factory::miniProgram(config('wechat.mini_program.default'));
-        $res = $app->auth->session($code);
+        $res = $this->app->auth->session($code);
+        return $res;
+    }
+
+    /**
+     * 微信小程序 消息解密
+     * @param $session
+     * @param $iv
+     * @param $encryptedData
+     * @return array
+     */
+    public function decryotedData($session, $iv, $encryptedData)
+    {
+        $res = $this->app->encryptor->decryptData($session, $iv, $encryptedData);
         return $res;
     }
 

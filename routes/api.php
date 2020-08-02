@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix'=>'wechat'], function (){
     Route::group(['prefix' => 'mini-program'], function (){
+        // 微信登录
         Route::get('login', 'MiniProgramController@login');
+        // 用户信息完善
+        Route::put('user', 'UserController@updateUser');
     });
+
 });
