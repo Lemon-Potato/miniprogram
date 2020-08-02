@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use App\Modules\User;
 use Illuminate\Http\Request;
 use App\Services\MiniProgramService;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
