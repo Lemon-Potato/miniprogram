@@ -13,6 +13,7 @@ use App\Modules\User;
 use Illuminate\Http\Request;
 use App\Services\MiniProgramService;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -28,6 +29,12 @@ class UserController extends Controller
         Log::info('微信小程序解密数据', $decryted_info);
         $user_model->updateUserByOpenId($decryted_info);
         return responseSuccess();
+    }
+
+    public function test(Request $request)
+    {
+        $res = JWTAuth::parseToken()->payload();
+        return responseSuccess($res);
     }
 
 }

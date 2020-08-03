@@ -24,6 +24,10 @@ Route::group(['prefix'=>'wechat'], function (){
         Route::get('login', 'MiniProgramController@login');
         // 用户信息完善
         Route::put('user', 'UserController@updateUser');
+        // 需要权限访问
+        Route::group(['middleware'=>'auth:api'], function() {
+            Route::get('test', 'UserController@test');
+        });
     });
 
 });

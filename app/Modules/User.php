@@ -2,12 +2,14 @@
 
 namespace App\Modules;
 
+use App\Services\JWTService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -37,12 +39,34 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
      * 微信登录时候创建新的用户
      * @param $info
-     * @return \Illuminate\Database\Eloquent\Model|static
+     * @return array
      */
     public function createUser($info)
     {
+        $jwt_auth_service = new JWTService();
+
         try {
             $user = self::query()->firstOrCreate(['openid'=>$info['openid']], [
                 'openid'=>$info['openid'],
@@ -54,7 +78,10 @@ class User extends Authenticatable
                 $user->session_key = $info['session_key'];
                 $user->save();
             }
-            return $user->id;
+
+            $res = $jwt_auth_service->login($user, 2);
+            $res['user_id'] = $user->id;
+            return $res;
         } catch (\Exception $exception) {
             Log::error('新创建用户失败'. $exception->getMessage() . $exception->getTraceAsString());
         }
